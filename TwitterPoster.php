@@ -1,6 +1,9 @@
 <?php
 use ChainOfResponsibility\APoster;
 
+/**
+ * Posting message in Twitter.
+ */
 class TwitterPoster extends APoster {
 
 	protected function writeMessage($msg) {

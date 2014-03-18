@@ -8,21 +8,37 @@ function __autoload($class)
 }
 
 class ChainOfResponsibilityExample {
-	public function run() {
 
+	private $notifier;
+
+	private $messages = array();
+
+	public function __construct() {
 		// строим цепочку обязанностей
-		$logger = new FacebookPoster();
-		$logger1 = $logger->setNext(new TwitterPoster(APoster::BREAKING_NEWS));
-		$logger2 = $logger1->setNext(new InstagramPoster(APoster::JOKE));
+		$this->notifier  = new FacebookPoster();
+		$notifier1 = $this->notifier->setNext(new TwitterPoster(APoster::BREAKING_NEWS));
+		$notifier2 = $notifier1->setNext(new InstagramPoster(APoster::JOKE));
+	}
 
-		$logger->message("Dark drama of Venice Carnival.");
+	public function run() {
+		foreach ($this->messages as $message) {
+			$this->notifier->message($message[0], $message[1]);
+		}
 
-		$logger->message("Russia invaded on Mars.", APoster::BREAKING_NEWS);
+	}
 
-		$logger->message("Funny cat.", APoster::JOKE);
+	public function addMessage($message, $priority = APoster::NEWS) {
+		$this->messages[] = array($message, $priority);
 	}
 }
 
 $chain = new ChainOfResponsibilityExample();
+
+$chain->addMessage("Dark drama of Venice Carnival.");
+
+$chain->addMessage("Russia invaded on Mars.", APoster::BREAKING_NEWS);
+
+$chain->addMessage("Funny cat.", APoster::JOKE);
+
 $chain->run();
 

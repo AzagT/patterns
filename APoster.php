@@ -8,7 +8,11 @@
 
 namespace ChainOfResponsibility;
 
-
+/**
+ * Basic class in ChainOfResponsibility pattern, all chain links must implement this class.
+ *
+ * @package ChainOfResponsibility
+ */
 abstract class APoster {
 
 	const BREAKING_NEWS = 999;
