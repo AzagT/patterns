@@ -7,10 +7,25 @@ function __autoload($class)
 	require end($parts) . '.php';
 }
 
-class ChainOfResponsibilityExample {
+/**
+ * Publish messages in social net ranged by priority.
+ *
+ * Class PublishChain
+ */
+class PublishChain {
 
+	/**
+	 * Root link in chain.
+	 *
+	 * @var APoster
+	 */
 	private $notifier;
 
+	/**
+	 * Array of messages.
+	 *
+	 * @var array
+	 */
 	private $messages = array();
 
 	public function __construct() {
@@ -20,19 +35,27 @@ class ChainOfResponsibilityExample {
 		$notifier2 = $notifier1->setNext(new InstagramPoster(APoster::JOKE));
 	}
 
+	/**
+	 * Publish all messages.
+	 */
 	public function run() {
 		foreach ($this->messages as $message) {
 			$this->notifier->message($message[0], $message[1]);
 		}
-
 	}
 
+	/**
+	 * Add message
+	 *
+	 * @param string  $message  Message body.
+	 * @param integer $priority Message priority.
+	 */
 	public function addMessage($message, $priority = APoster::NEWS) {
 		$this->messages[] = array($message, $priority);
 	}
 }
 
-$chain = new ChainOfResponsibilityExample();
+$chain = new PublishChain();
 
 $chain->addMessage("Dark drama of Venice Carnival.");
 
